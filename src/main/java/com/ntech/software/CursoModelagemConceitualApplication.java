@@ -14,6 +14,7 @@ import com.ntech.software.domain.Cidade;
 import com.ntech.software.domain.Cliente;
 import com.ntech.software.domain.Endereco;
 import com.ntech.software.domain.Estado;
+import com.ntech.software.domain.ItemPedido;
 import com.ntech.software.domain.Pagamento;
 import com.ntech.software.domain.PagamentoComBoleto;
 import com.ntech.software.domain.PagamentoComCartao;
@@ -23,6 +24,7 @@ import com.ntech.software.domain.enums.EstadoPagamento;
 import com.ntech.software.domain.enums.TipoCliente;
 import com.ntech.software.repositories.CategoriaRepository;
 import com.ntech.software.repositories.EstadoRepository;
+import com.ntech.software.repositories.ItemPedidoRepository;
 import com.ntech.software.repositories.PagamentoRepository;
 import com.ntech.software.repositories.PedidoRepository;
 import com.ntech.software.repositories.CidadeRepository;
@@ -50,6 +52,8 @@ public class CursoModelagemConceitualApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoModelagemConceitualApplication.class, args);
@@ -115,6 +119,19 @@ public class CursoModelagemConceitualApplication implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 }
